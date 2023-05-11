@@ -1,5 +1,4 @@
 import LinkedList from "./linkedList";
-import { LinkedNode } from "./linkedList";
 
 export default class Queue<T> {
   list: LinkedList<T>;
@@ -13,19 +12,20 @@ export default class Queue<T> {
     return this;
   }
 
-  deque() {
-    return this.list.deleteHead();
+  deque(): T | null {
+    const element = this.list.deleteHead();
+    return element;
   }
 
-  peek() {
-    return this.list.head;
+  peek(): T | null {
+    return this.list.head ? this.list.head.value : null;
   }
 
   isEmpty() {
     return !this.list.head;
   }
 
-  forEach(callback: (node: LinkedNode<T>) => void) {
+  forEach(callback: (value: T) => void) {
     this.list.forEach(callback);
   }
 }

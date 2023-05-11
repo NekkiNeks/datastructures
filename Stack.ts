@@ -15,13 +15,11 @@ export default class Stack<T> {
     return this.list.getLast();
   }
 
-  push(item: T) {
-    this.list.append(item);
+  push(value: T) {
+    this.list.append(value);
   }
 
-  shift() {
-    const head = this.list.head;
-    if (head) this.list.deleteHead();
-    return head;
+  shift(): T | null {
+    return this.list.deleteHead();
   }
 }

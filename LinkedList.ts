@@ -1,7 +1,7 @@
 export default class LinkedList<T> {
   head: LinkedNode<T> | null = null;
 
-  getLast() {
+  private getLastNode(): LinkedNode<T> | null {
     if (!this.head) return null;
 
     let current = this.head;
@@ -14,11 +14,16 @@ export default class LinkedList<T> {
     return null;
   }
 
-  deleteHead() {
+  getLast(): T | null {
+    const lastNode = this.getLastNode();
+    return lastNode ? lastNode.value : null;
+  }
+
+  deleteHead(): T | null {
     if (!this.head) return null;
     const prevHead = this.head;
     this.head = this.head.next;
-    return prevHead;
+    return prevHead.value;
   }
 
   getLength(): number {
@@ -33,8 +38,8 @@ export default class LinkedList<T> {
     return counter;
   }
 
-  append(value: T) {
-    const last = this.getLast();
+  append(value: T): void {
+    const last = this.getLastNode();
 
     if (!last) {
       this.head = new LinkedNode(value);
@@ -43,7 +48,7 @@ export default class LinkedList<T> {
     }
   }
 
-  prepend(value: T) {
+  prepend(value: T): void {
     if (!this.head) {
       this.head = new LinkedNode(value);
     } else {
@@ -65,11 +70,11 @@ export default class LinkedList<T> {
     }
   }
 
-  forEach(callback: (node: LinkedNode<T>) => void) {
+  forEach(callback: (value: T) => void) {
     let current = this.head;
 
     while (current) {
-      callback(current);
+      callback(current.value);
       current = current.next;
     }
   }

@@ -1,14 +1,6 @@
 import Queue from "./Queue";
 
-class Tree<T> {
-  constructor(public root: TreeNode<T>) {}
-
-  get height(): number {
-    return getTreeHeight(this.root);
-  }
-}
-
-class TreeNode<T> {
+export class TreeNode<T> {
   height: number;
   left: TreeNode<T> | null;
   right: TreeNode<T> | null;
@@ -37,38 +29,32 @@ class TreeNode<T> {
     node.setParent(this);
     this.right = node;
   }
-}
 
-function getTreeHeight(rootNode: TreeNode<any>): number {
-  const leftHeight = rootNode.left ? getTreeHeight(rootNode.left) : 0;
-  const rightHeight = rootNode.right ? getTreeHeight(rootNode.right) : 0;
+  getHeight(): number {
+    const leftHeight = this.left ? this.left.getHeight() : 0;
+    const rightHeight = this.right ? this.right.getHeight() : 0;
 
-  return 1 + Math.max(leftHeight, rightHeight);
-}
+    return 1 + Math.max(leftHeight, rightHeight);
+  }
 
-function traverseDeep<T>(
-  rootNode: TreeNode<T>,
-  callback: (node: TreeNode<T>) => void
-) {
-  callback(rootNode);
+  traverseDeep(callback: (value: T) => void) {
+    callback(this.value);
+    if (this.left) this.left.traverseDeep(callback);
+    if (this.right) this.right.traverseDeep(callback);
+  }
 
-  if (rootNode.left) traverseDeep(rootNode.left, callback);
-  if (rootNode.right) traverseDeep(rootNode.right, callback);
-}
+  traverseWide(callback: (value: T) => void) {
+    const queue = new Queue<TreeNode<T>>();
 
-function traverseWide<T>(
-  rootNode: TreeNode<T>,
-  callback: (item: TreeNode<T>) => void
-) {
-  const queue = new Queue<typeof rootNode>();
+    queue.enque(this);
 
-  queue.enque(rootNode);
+    while (!queue.isEmpty()) {
+      const node = queue.deque();
+      if (!node) break;
+      callback(node.value);
 
-  while (!queue.isEmpty()) {
-    const node = queue.deque();
-    if (!node) break;
-    callback(node.value);
-    if (node.value.left) queue.enque(node.value.left);
-    if (node.value.right) queue.enque(node.value.right);
+      if (node.left) queue.enque(node.left);
+      if (node.right) queue.enque(node.right);
+    }
   }
 }
