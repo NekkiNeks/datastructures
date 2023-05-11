@@ -2,6 +2,10 @@ import Queue from "./Queue";
 
 class Tree<T> {
   constructor(public root: TreeNode<T>) {}
+
+  get height(): number {
+    return getTreeHeight(this.root);
+  }
 }
 
 class TreeNode<T> {
@@ -68,14 +72,3 @@ function traverseWide<T>(
     if (node.value.right) queue.enque(node.value.right);
   }
 }
-
-const tree = new Tree<string>(new TreeNode("root"));
-tree.root.setLeft(new TreeNode("root-left"));
-tree.root.setRight(new TreeNode("root-right"));
-tree.root.left!.setLeft(new TreeNode("root-left-left"));
-tree.root.left!.setRight(new TreeNode("root-left-right"));
-tree.root.right!.setLeft(new TreeNode("root-right-left"));
-tree.root.right!.setRight(new TreeNode("root-right-right"));
-
-traverseDeep(tree.root, (node) => console.log(node.value));
-traverseWide(tree.root, (node) => console.log(node.value));
