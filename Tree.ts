@@ -20,14 +20,16 @@ export class TreeNode<T> {
     this.height = node.height + 1;
   }
 
-  setLeft(node: TreeNode<T>) {
+  setLeft(node: TreeNode<T>): TreeNode<T> {
     node.setParent(this);
     this.left = node;
+    return node;
   }
 
-  setRight(node: TreeNode<T>) {
+  setRight(node: TreeNode<T>): TreeNode<T> {
     node.setParent(this);
     this.right = node;
+    return node;
   }
 
   getHeight(): number {
